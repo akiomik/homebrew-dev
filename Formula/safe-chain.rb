@@ -9,7 +9,7 @@ class SafeChain < Formula
   depends_on "node"
 
   def install
-    system "npm", "install", *std_npm_args(libexec)
+    system "npm", "install", *std_npm_args
     
     # Create symlinks for all the binary commands
     bin.install_symlink libexec/"bin/safe-chain.js" => "safe-chain"
