@@ -21,19 +21,10 @@ class Libuws < Formula
 
     # Handle uSockets dependency (normally a git submodule)
     resource("usockets").stage do
-      # Debug: List all extracted contents
-      puts "=== DEBUG: Contents after extraction ==="
-      puts `ls -la`
-      
-      # Find any directory (the tarball might extract differently)
-      extracted_dir = Pathname.pwd.children.find { |d| d.directory? }
-      if extracted_dir
-        puts "Found directory: #{extracted_dir.basename}"
-        (buildpath/"uSockets").mkpath
-        system "cp", "-R", "#{extracted_dir}/.", buildpath/"uSockets"
-      else
-        odie "Could not find any extracted directory"
-      end
+      # The tarball extracts directly to the current directory, not a subdirectory
+      # Copy all files directly to uSockets directory
+      (buildpath/"uSockets").mkpath
+      system "cp", "-R", ".", buildpath/"uSockets"
     end
 
     # Debug: Check if uSockets directory and files exist
