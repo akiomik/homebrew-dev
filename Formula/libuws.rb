@@ -11,7 +11,8 @@ class Libuws < Formula
 
   # uSockets dependency - using specific revision for v20.74.0 compatibility
   resource "usockets" do
-    url "https://github.com/uNetworking/uSockets.git", revision: "182b7e4fe7211f98682772be3df89c71dc4884fa"
+    url "https://github.com/uNetworking/uSockets.git"
+    revision "182b7e4fe7211f98682772be3df89c71dc4884fa"
   end
 
   def install
@@ -19,10 +20,11 @@ class Libuws < Formula
     use_openssl = !ENV["HOMEBREW_LIBUWS_WITHOUT_OPENSSL"]
 
     # Handle uSockets dependency (normally a git submodule)
-    # Create uSockets directory and stage the resource there
-    usockets_dir = buildpath/"uSockets"
-    usockets_dir.mkpath
-    resource("usockets").stage usockets_dir
+    resource("usockets").stage do
+      # Move all files to the uSockets subdirectory
+      (buildpath/"uSockets").mkpath
+      system "cp", "-R", ".", buildpath/"uSockets"
+    end
 
     # Build uSockets as a static library
     cd "uSockets" do
