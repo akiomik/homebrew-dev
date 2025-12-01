@@ -11,20 +11,20 @@ class SafeChain < Formula
   def install
     system "npm", "install", *std_npm_args
     
-    # Create symlinks for all the binary commands
-    bin.install_symlink libexec/"bin/safe-chain.js" => "safe-chain"
-    bin.install_symlink libexec/"bin/aikido-npm.js" => "aikido-npm"
-    bin.install_symlink libexec/"bin/aikido-npx.js" => "aikido-npx"
-    bin.install_symlink libexec/"bin/aikido-yarn.js" => "aikido-yarn"
-    bin.install_symlink libexec/"bin/aikido-pnpm.js" => "aikido-pnpm"
-    bin.install_symlink libexec/"bin/aikido-pnpx.js" => "aikido-pnpx"
-    bin.install_symlink libexec/"bin/aikido-bun.js" => "aikido-bun"
-    bin.install_symlink libexec/"bin/aikido-bunx.js" => "aikido-bunx"
-    bin.install_symlink libexec/"bin/aikido-uv.js" => "aikido-uv"
-    bin.install_symlink libexec/"bin/aikido-pip.js" => "aikido-pip"
-    bin.install_symlink libexec/"bin/aikido-pip3.js" => "aikido-pip3"
-    bin.install_symlink libexec/"bin/aikido-python.js" => "aikido-python"
-    bin.install_symlink libexec/"bin/aikido-python3.js" => "aikido-python3"
+    # Create symlinks for all binary commands
+    bin.install_symlink libexec/"bin/safe-chain" => "safe-chain"
+    bin.install_symlink libexec/"bin/aikido-npm" => "aikido-npm"
+    bin.install_symlink libexec/"bin/aikido-npx" => "aikido-npx"
+    bin.install_symlink libexec/"bin/aikido-yarn" => "aikido-yarn"
+    bin.install_symlink libexec/"bin/aikido-pnpm" => "aikido-pnpm"
+    bin.install_symlink libexec/"bin/aikido-pnpx" => "aikido-pnpx"
+    bin.install_symlink libexec/"bin/aikido-bun" => "aikido-bun"
+    bin.install_symlink libexec/"bin/aikido-bunx" => "aikido-bunx"
+    bin.install_symlink libexec/"bin/aikido-uv" => "aikido-uv"
+    bin.install_symlink libexec/"bin/aikido-pip" => "aikido-pip"
+    bin.install_symlink libexec/"bin/aikido-pip3" => "aikido-pip3"
+    bin.install_symlink libexec/"bin/aikido-python" => "aikido-python"
+    bin.install_symlink libexec/"bin/aikido-python3" => "aikido-python3"
   end
 
   test do
