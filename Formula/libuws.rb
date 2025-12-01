@@ -150,7 +150,7 @@ class Libuws < Formula
     # Install the library with proper symlinks using Homebrew helpers
     lib.install dylib_name
     lib.install_symlink dylib_name => shared_library("libuWS")
-    lib.install_symlink dylib_name => shared_library("libuWS", version.major)
+    lib.install_symlink dylib_name => shared_library("libuWS", version.major.to_s)
 
     # Install headers in the standard layout
     include.install "src" => "uWebSockets"
