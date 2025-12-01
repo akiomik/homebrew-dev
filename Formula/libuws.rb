@@ -133,14 +133,17 @@ class Libuws < Formula
     # Link the dynamic library
     link_args = [ENV.cxx, "-shared", "-fPIC",
                  "-o", dylib_name,
-                 "dylib_wrapper.o", *Dir["objects/*.o"],
+                 "dylib_wrapper.o"] + Dir["objects/*.o"] + [
                  "-lz",
                  "-install_name", "#{lib}/#{shared_library("libuWS")}",
                  "-compatibility_version", version.major_minor.to_s,
-                 "-current_version", dylib_version]
+                 "-current_version", dylib_version
+    ]
 
     # Add OpenSSL libraries only if enabled
-    link_args.insert(-6, *openssl_libs.split) if use_openssl
+    if use_openssl
+      link_args += openssl_libs.split
+    end
 
     system(*link_args)
 
