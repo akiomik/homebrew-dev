@@ -30,15 +30,17 @@ class Libuws < Formula
         ENV.append_to_cflags "-I#{Formula["openssl@3"].opt_include}"
         ENV.append "LDFLAGS", "-L#{Formula["openssl@3"].opt_lib}"
 
-        system "make", "clean"
+        # Clean only if library already exists (avoid error on fresh build)
+        system "make", "clean" if File.exist?("uSockets.a")
         system "make", "WITH_OPENSSL=1"
       else
-        system "make", "clean"
+        # Clean only if library already exists (avoid error on fresh build)
+        system "make", "clean" if File.exist?("uSockets.a")
         system "make"
       end
 
       # Verify static library was created
-      odie "Failed to build uSockets static library" unless (buildpath/"uSockets/uSockets.a").exist?
+      odie "Failed to build uSockets static library" unless File.exist?("uSockets.a")
     end
 
     # Create dynamic library wrapper
