@@ -10,7 +10,7 @@ class SafeChain < Formula
 
   def install
     system "npm", "install", *std_npm_args
-    
+
     # Create symlinks for all binary commands
     bin.install_symlink libexec/"bin/safe-chain" => "safe-chain"
     bin.install_symlink libexec/"bin/aikido-npm" => "aikido-npm"
