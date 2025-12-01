@@ -118,11 +118,13 @@ class Libuws < Formula
     end
 
     # Compile the wrapper with position independent code
-    system ENV.cxx, "-std=c++17", "-fPIC", "-O3", "-DNDEBUG",
-           openssl_cflags,
-           "-Isrc", "-IuSockets/src",
-           ssl_defines,
-           "-c", "dylib_wrapper.cpp", "-o", "dylib_wrapper.o"
+    compile_args = [ENV.cxx, "-std=c++17", "-fPIC", "-O3", "-DNDEBUG"]
+    compile_args << openssl_cflags unless openssl_cflags.empty?
+    compile_args += ["-Isrc", "-IuSockets/src"]
+    compile_args << ssl_defines unless ssl_defines.empty?
+    compile_args += ["-c", "dylib_wrapper.cpp", "-o", "dylib_wrapper.o"]
+    
+    system(*compile_args)
 
     # Create the dynamic library with proper macOS naming conventions
     dylib_version = version.to_s
@@ -134,7 +136,7 @@ class Libuws < Formula
                  "dylib_wrapper.o", *Dir["objects/*.o"],
                  "-lz",
                  "-install_name", "#{lib}/#{shared_library("libuWS")}",
-                 "-compatibility_version", version.major_minor,
+                 "-compatibility_version", version.major_minor.to_s,
                  "-current_version", dylib_version]
 
     # Add OpenSSL libraries only if enabled
