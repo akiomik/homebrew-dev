@@ -19,8 +19,10 @@ class Libuws < Formula
     use_openssl = !ENV["HOMEBREW_LIBUWS_WITHOUT_OPENSSL"]
 
     # Handle uSockets dependency (normally a git submodule)
-    unless (buildpath/"uSockets").exist?
-      resource("usockets").stage(buildpath/"uSockets")
+    resource("usockets").stage do
+      # Copy all files to the uSockets directory
+      (buildpath/"uSockets").mkpath
+      cp_r ".", buildpath/"uSockets"
     end
 
     # Build uSockets as a static library
