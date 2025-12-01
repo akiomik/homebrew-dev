@@ -31,8 +31,22 @@ class Libuws < Formula
       end
     end
 
+    # Debug: Check if uSockets directory and files exist
+    puts "=== DEBUG: Checking uSockets directory ==="
+    puts "uSockets directory exists: #{(buildpath/"uSockets").exist?}"
+    if (buildpath/"uSockets").exist?
+      puts "Contents of uSockets directory:"
+      Dir.chdir(buildpath/"uSockets") do
+        puts `ls -la`
+        puts "Makefile exists: #{File.exist?("Makefile")}"
+      end
+    end
+    puts "=== END DEBUG ==="
+
     # Build uSockets as a static library
     cd "uSockets" do
+      # Verify Makefile exists before proceeding
+      odie "Makefile not found in uSockets directory" unless File.exist?("Makefile")
       if use_openssl
         # Use Homebrew's standard environment setup for OpenSSL
         ENV.append_to_cflags "-I#{Formula["openssl@3"].opt_include}"
