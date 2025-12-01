@@ -9,10 +9,10 @@ class Libuws < Formula
   depends_on "openssl@3" unless ENV["HOMEBREW_LIBUWS_WITHOUT_OPENSSL"]
   depends_on "pkg-config" => :build
 
-  # uSockets dependency - using specific revision for v20.74.0 compatibility
+  # uSockets dependency - download tarball instead of git
   resource "usockets" do
-    url "https://github.com/uNetworking/uSockets.git"
-    revision "182b7e4fe7211f98682772be3df89c71dc4884fa"
+    url "https://github.com/uNetworking/uSockets/archive/182b7e4fe7211f98682772be3df89c71dc4884fa.tar.gz"
+    sha256 "a11dced81a66af897c77e6bb37101a04e675a74c377cc1f00b7ae4a6ad5338b7"
   end
 
   def install
@@ -21,9 +21,14 @@ class Libuws < Formula
 
     # Handle uSockets dependency (normally a git submodule)
     resource("usockets").stage do
-      # Move all files to the uSockets subdirectory
-      (buildpath/"uSockets").mkpath
-      system "cp", "-R", ".", buildpath/"uSockets"
+      # The tarball extracts to uSockets-<hash> directory, move contents to uSockets
+      extracted_dir = Pathname.pwd.children.find { |d| d.directory? && d.basename.to_s.start_with?("uSockets-") }
+      if extracted_dir
+        (buildpath/"uSockets").mkpath
+        system "cp", "-R", "#{extracted_dir}/.", buildpath/"uSockets"
+      else
+        odie "Could not find extracted uSockets directory"
+      end
     end
 
     # Build uSockets as a static library
